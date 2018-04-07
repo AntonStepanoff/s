@@ -1,0 +1,58 @@
+This is a static HTML export of the semanticweb.org wiki.
+
+A small bash script to create maintenance links
+Why use this script
+Semantic MediaWiki and the Halo Extension both have maintenance scripts that should be run from the maintenance directory of the MediaWiki installation. The README in the maintenance directory recommends symlinking them. This script will automatically do that for each file with a PHP extension in a given directory.
+
+Using the script
+You will need shell access on a Linux server. Save the script code to a file named "maintenance_links.bash" on the server, and make sure it has permission to execute:
+
+chmod 755 maintenance_links.bash
+Example execution commands:
+
+./maintenance_links.bash ~/http/wiki_test/extensions/SemanticMediaintenance/ ~/http/wiki_test/maintenance/
+./maintenance_links.bash ~/http/wiki_test/extensions/SMWHalo/maintenance/ ~/http/wiki_test/maintenance/
+The script
+#!/bin/bash
+
+# Usage: maintenance_links.bash SOURCE_DIR TARGET_DIR
+#
+# This script will make links for maintenance scripts from
+# the source directory to the target directory.
+# Use the full path to each directory.
+
+SOURCE_DIR=$1
+TARGET_DIR=$2
+
+usage()
+{
+	echo "Usage: $0 SOURCE_DIR TARGET_DIR";
+	echo;
+	echo "PHP files from the source directory will be linked to in the target directory.";
+	echo "Use the full path to each directory.";
+}
+
+# check for the right number of arguments and that they are both directories
+if [[ "$#" -eq "0" || ! -d $1 || ! -d $2 ]]
+then
+	usage;
+	exit;
+fi
+
+echo "Linking .php files from $SOURCE_DIR to $TARGET_DIR"
+
+# find every PHP file in the source directory and symlink to it from the target directory
+for FILE in `find $SOURCE_DIR -name "*.php"`;
+do
+	echo $FILE;
+	ln -sf $FILE $TARGET_DIR
+done
+Category: Semantic MediaWiki
+Navigation menuPage
+Main Page
+Tools
+Ontologies
+People
+Events
+This page was last modified on 15 November 2007, at 05:54.
+Privacy policyAbout semanticweb.org.eduDisclaimersPowered by MediaWiki  Powered by Semantic MediaWikiЛ
